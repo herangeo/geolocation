@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>Getting Latitude and Longitude</title>
+        <link rel="stylesheet" href="styles/site.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    </head>
+    <style>
+
+
+        body{
+            margin:0;
+            width:auto;
+            padding: 0;
+
+        }
+        iframe{
+            position: absolute;
+            margin-left: 50%;
+            top: 50px;
+        }
+        main{
+            position: absolute;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            box-shadow: 0 4px 8px 0  rgba(65, 63, 63, 0.19), 0 6px 20px 0 rgba(83, 73, 73, 0.19);
+            width: 30%;
+            
+        }
+        .div1{
+            box-shadow: 0 4px 8px 0  rgba(65, 63, 63, 0.19), 0 6px 20px 0 rgba(83, 73, 73, 0.19);
+            height: 150px;
+
+
+        }
+
+        .MicrosoftMap{
+            position:absolute;
+
+            width: 100%;
+
+        }
+        .container{
+            padding: 5%;
+
+        }
+        .row{
+            padding: 2%;
+            gap:5px
+        }
+        .col-md-8{
+            background-color: black;
+            border-radius: 10px;
+            color: white;
+
+        }
+        .col-6.col-md-4{
+            background-color: black;
+            border-radius: 10px;
+            color: white;
+            width:180px;
+        }
+        .col-6{
+            background-color: black;
+            border-radius: 10px;
+            color: white;
+            width: 180px;
+        }
+        h2{
+            text-align: center;
+            padding: 0px;
+
+        }
+
+
+
+
+
+
+    </style>
+    <body>
+        <div class="div1">
+            <svg
+            width="100"
+            height="100"
+            viewBox="0 0 120 120"
+            xmlns="http://www.w3.org/2000/svg">
+            <polygon points="60,30 90,90 30,90">
+              <animateTransform
+                attributeName="transform"
+                attributeType="XML"
+                type="rotate"
+                from="0 60 70"
+                to="360 60 70"
+                dur="10s"
+                repeatCount="indefinite" />
+            </polygon>
+          </svg>
+          <h2>GETTING LATTITUDE AND LONGITUDE</h2>
+
+        </div>
+                    <main>
+                        <div class="container">
+                            <!-- Stack the columns on mobile by making one full-width and the other half-width -->
+                            <div class="row">
+                              <div class="col-md-8"><p>Time Stamp: <span id="timestamp"></span></p></div>
+                              <div class="col-6 col-md-4"><p>Latitude : <span id="lat"></span></p></div>
+                            </div>
+                          
+                            <!-- Columns start at 50% wide on mobile and bump up to 33.3% wide on desktop -->
+                            <div class="row">
+                              <div class="col-6 col-md-4"><p>Longitude: <span id="long"></span></p></div>
+                              <div class="col-6 col-md-4"><p>Lat/Long in Meters: <span id="accuracy"></span></p></div>
+                              <div class="col-6 col-md-4"><p>Altitude: <span id="altitude"></span></p></div>
+                            </div>
+                          
+                            <!-- Columns are always 50% wide, on mobile and desktop -->
+                            <div class="row">
+                              <div class="col-6"><p>Altitude in Meters: <span id="altitudeaccuracy"></span></p></div>
+                              <div class="col-6"><p>Heading (Degrees from True North) <span id="heading"></span></p></div>
+                              <div class="col-6"><p>Speed: (In meters/second): <span id="speed"></span></p></div>
+                            </div>
+                        </div>
+                        <div id="errorArea" class="alert d-none">
+                        </div>
+                    </main>
+        </div>
+        <div id="myMap" style="position:relative;width:980px;height:450px;margin-left:34%;">
+        </div>
+              
+        <div>
+                        <script type='text/javascript'>
+
+                        function GetMap() {
+                                var map = new Microsoft.Maps.Map('#myMap', {
+                                    credentials: 'AmwUMTW-qxPanLp48ZW2tjRzHof-O6-5v8nO222DHcvQ54DLYIuaRtf2RdmwHr_a'
+                                });
+                        
+                                //Request the user's location
+                                navigator.geolocation.getCurrentPosition(function (position) {
+                                    var loc = new Microsoft.Maps.Location(
+                                        position.coords.latitude,
+                                        position.coords.longitude);
+                        
+                                    //Add a pushpin at the user's location.
+                                    var pin = new Microsoft.Maps.Pushpin(loc);
+                                    map.entities.push(pin);
+                        
+                                    //Center the map on the user's location.
+                                    map.setView({ center: loc, zoom: 15 });
+                                });
+                            }
+                            </script>
+                            <script type='text/javascript' src='http://www.bing.com/api/maps/mapcontrol?callback=GetMap' async defer></script>
+        </div>                
+                        
+                    
+
+                    <script>
+                        'use strict';
+                        window.onload=function()
+                        {
+                            if(navigator.geolocation)
+                            {
+                                navigator.geolocation.getCurrentPosition(displayPosition,locationerror);
+                            }
+                            else
+                            {
+                                displayError("Plaease Update your browser with Geolocation");
+                            }
+                        };
+            function displayPosition(pos)
+            {
+                document.getElementById("timestamp").innerText = new Date(pos.timestamp);
+                document.getElementById("lat").innerText = pos.coords.latitude;
+                document.getElementById("long").innerText = pos.coords.longitude;
+                document.getElementById("accuracy").innerText = pos.coords.accuracy;
+                document.getElementById("altitude").innerText = (pos.coords.altitude ? pos.coords.altitude : "n/a");
+                document.getElementById("altitudeaccuracy").innerText = (pos.coords.altitudeAccuracy ? pos.coords.altitudeAccuracy : "n/a");
+                document.getElementById("heading").innerText = pos.coords.heading;
+                document.getElementById("speed").innerText = pos.coords.speed;
+            }
+
+            function locationerror(error)
+            {
+                let msg="";
+                console.log("error.message = " + error.message);
+                switch(error.code)
+                {
+                    case error.PERMISSION_DENIED:
+                        msg="User Doesn't want to share his/her Location";
+                        break;
+                    case error.POSITION_UNAVAILABLE:
+                        msg=" Can't determine user's position";
+                        break;
+                    case error.TIMEOUT:
+                        msg="The response is out of Time";
+                        break;
+                    case error.UNKNOWN_ERROR:
+                        msg="Unknown Error Occured";
+                        break;
+                }
+            displayError(msg);
+
+                
+            }
+            function displayError(msg) {
+                let elem = document.getElementById("errorArea");
+                elem.classList.remove("d-none");
+                elem.innerHTML = msg;
+                }
+                    </script>
+    </body>
+</html>
